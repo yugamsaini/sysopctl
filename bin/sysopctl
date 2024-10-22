@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# This script acts as a system operations controller, allowing administrators
+# to manage services, check system load, monitor processes, analyze logs, and perform backups.
+# It simplifies common system management tasks, providing a unified interface.
+
+# Define the current script's directory for sourcing dependencies
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$BASE_DIR/../modules"
+
+# Import required scripts that handle various tasks such as services, system health, disk monitoring, etc.
+source "$MODULE_DIR/services.sh"
+source "$MODULE_DIR/system_health.sh"
+source "$MODULE_DIR/disk.sh"
+source "$MODULE_DIR/process.sh"
+source "$MODULE_DIR/logs.sh"
+source "$MODULE_DIR/backup.sh"
+
+# Define the application version
+APP_VERSION="v0.1.0"
+
+# Function to display help information
+# This shows a list of available commands and usage examples
+display_help() {
+    cat << HELP_TEXT
+sysopctl - System Operations Controller ($APP_VERSION)
+
+Usage: sysopctl [command] [options]
+
+Commands:
+
+  service list                      List all currently active system services, providing an overview of running services.
+  service start <name>              Start the specified service to ensure it is running and functional.
+  service stop <name>               Stop the specified service, halting its operation immediately.
+
+  system load                       Display real-time system load statistics, showing averages over 1, 5, and 15 minutes.
+
+  disk usage                        Show detailed disk usage statistics by partition, including used and available space.
+
+  process monitor                   Monitor active system processes in real-time, displaying CPU and memory usage by each process.
+
+  logs analyze                      Analyze recent critical system logs to identify errors and significant system events.
+
+  backup <path>                     Create a backup of files and directories from the specified path to ensure data safety.
+
+  --help                            Display this help guide.
+  --version                         Display version details of sysopctl.
+
+Examples:
+
+  sysopctl service list
+  sysopctl service start apache2
+  sysopctl service stop mysql
+  sysopctl system load
+  sysopctl disk usage
+  sysopctl process monitor
+  sysopctl logs analyze
+  sysopctl backup /home/user/documents
+
+HELP_TEXT
+}
+
+# Function to display the current version of the application
+display_version() {
+    echo "sysopctl version $APP_VERSION"
+}
+
+# Main command dispatcher
+# This section handles user input and dispatches the appropriate function based on the given command.
+case $1 in
+    --help|-h)
+        # If the user requests help, display the help guide
+        display_help
+        ;;
+    --version|-v)
+        # If the user requests the version, display the version information
+        display_version
+        ;;
+    service)
+        # Handle service-related commands: list, start, or stop services
+        service "$2" "$3"
+        ;;
+    system)
+        # Handle system-related commands, such as checking system load
+        if [[ $2 == "load" ]]; then
+            system_load
+        else
+            echo "Unknown system command."
+            display_help
+        fi
+        ;;
+    disk)
+        # Handle disk-related commands, such as displaying disk usage
+        if [[ $2 == "usage" ]]; then
+            check_disk_usage
+        else
+            echo "Unknown disk command."
+            display_help
+        fi
+        ;;
+    process)
+        # Handle process-related commands, such as monitoring processes
+        if [[ $2 == "monitor" ]]; then
+            process_monitor
+        else
+            echo "Unknown process command."
+            display_help
+        fi
+        ;;
+    logs)
+        # Handle log-related commands, such as analyzing logs
+        if [[ $2 == "analyze" ]]; then
+            analyze_logs
+        else
+            echo "Unknown logs command."
+            display_help
+        fi
+        ;;
+    backup)
+        # Handle backup command, creating backups for the specified path
+        backup_system "$2"
+        ;;
+    *)
+        # For any unrecognized command, display an error and show the help guide
+        echo "Unrecognized command."
+        display_help
+        ;;
+esac
+

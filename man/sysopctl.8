@@ -1,0 +1,80 @@
+.TH SYSOPCTL 8 "October 2024" "v0.1.0" "System Operations Control"
+.SH NAME
+sysopctl \- System operations management command
+.SH SYNOPSIS
+.B sysopctl
+[\fIcommand\fR] [\fIoptions\fR]
+.SH DESCRIPTION
+sysopctl is a comprehensive system operations management utility designed to enhance administrative efficiency by integrating a range of system tasks. With sysopctl, administrators can easily control system services, monitor performance, analyze logs, and perform backups. Its streamlined interface helps to reduce manual intervention while providing valuable insights into system health and operation.
+
+.SH COMMANDS
+.TP
+\fBsysopctl service list\fR
+List all active and running system services, giving an overview of currently managed services.
+.TP
+\fBsysopctl service start <service-name>\fR
+Start the specified service, ensuring that it is running and functional.
+.TP
+\fBsysopctl service stop <service-name>\fR
+Stop the specified service, immediately halting its operations.
+.TP
+\fBsysopctl system load\fR
+Display the current system load, showing averages over the last 1, 5, and 15 minutes.
+.TP
+\fBsysopctl disk usage\fR
+Show disk usage statistics by partition, including percentage usage and available space.
+.TP
+\fBsysopctl process monitor\fR
+Provide real-time process monitoring, displaying CPU and memory usage by process.
+.TP
+\fBsysopctl logs analyze\fR
+Analyze critical system logs, flagging recent errors and significant events for review.
+.TP
+\fBsysopctl backup <path>\fR
+Perform a backup of files and directories from the specified path to ensure data protection.
+
+.SH OPTIONS
+.TP
+\fB--help\fR, \fB-h\fR
+Display help information and usage instructions for the command.
+.TP
+\fB--version\fR, \fB-v\fR
+Display the version of sysopctl.
+
+.SH EXAMPLES
+.TP
+List all running services:
+.B
+sysopctl service list
+.TP
+Start the Apache web service:
+.B
+sysopctl service start apache2
+.TP
+Stop the MySQL database service:
+.B
+sysopctl service stop mysql
+.TP
+Check system load averages:
+.B
+sysopctl system load
+.TP
+Show disk usage statistics for all partitions:
+.B
+sysopctl disk usage
+.TP
+Monitor active system processes:
+.B
+sysopctl process monitor
+.TP
+Analyze recent system logs for critical issues:
+.B
+sysopctl logs analyze
+.TP
+Backup user documents from the home directory:
+.B
+sysopctl backup /home/user/documents
+
+.SH AUTHOR
+Written by Yugam Saini
+
